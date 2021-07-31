@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="false">
+
+	<appender name="json_console-log"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+	</appender>
+
+	<appender name="json_file_appender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/application-json.log</file>
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/application-json.%d{yyyy-MM-dd}.%i.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- Size of the log file -->
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<root level="Debug">
+		<appender-ref ref="json_console-log" />
+		<appender-ref ref="json_file_appender" />
+	</root>
+
+</configuration>
