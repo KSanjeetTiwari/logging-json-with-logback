@@ -3,7 +3,9 @@
 
 	<appender name="json_console-log"
 		class="ch.qos.logback.core.ConsoleAppender">
-		<encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+
+		</encoder>
 	</appender>
 
 	<appender name="json_file_appender"
@@ -23,9 +25,41 @@
 		</rollingPolicy>
 	</appender>
 
+	<!-- Custom pattern in log file -->
+	<appender name="json_custom_file_appender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/custom-json.log</file>
+		<encoder
+			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<pattern>
+					<pattern>
+						{
+						"timestamp":"%d{dd-MM-yyyy HH:mm:ss.SSS}",
+						"level":"%level",
+						"message":"%message"
+						}
+					</pattern>
+				</pattern>
+			</providers>
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/custom-json.%d{yyyy-MM-dd}.%i.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- Size of the log file -->
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+	</appender>
+
 	<root level="Debug">
 		<appender-ref ref="json_console-log" />
 		<appender-ref ref="json_file_appender" />
+		<appender-ref ref="json_custom_file_appender" />
 	</root>
 
 </configuration>
